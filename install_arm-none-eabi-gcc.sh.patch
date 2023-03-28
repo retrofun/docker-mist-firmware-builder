@@ -1,0 +1,78 @@
+--- install_arm-none-eabi-gcc.sh.orig	2023-03-26 23:35:59.638254613 +0200
++++ install_arm-none-eabi-gcc.sh	2023-03-26 23:36:42.462072231 +0200
+@@ -7,9 +7,9 @@
+ BINUTILS_ARCHIVE=${BINUTILS_VERSION}.tar.bz2
+ BINUTILS_MD5=ac493a78de4fee895961d025b7905be4
+ 
+-GCC_VERSION=gcc-5.2.0
+-GCC_ARCHIVE=${GCC_VERSION}.tar.bz2
+-GCC_MD5=a51bcfeb3da7dd4c623e27207ed43467
++GCC_VERSION=gcc-5.5.0
++GCC_ARCHIVE=${GCC_VERSION}.tar.xz
++GCC_MD5=0f70424213b4a1113c04ba66ddda0c1f
+ 
+ NEWLIB_VERSION=newlib-2.2.0
+ NEWLIB_ARCHIVE=${NEWLIB_VERSION}.tar.gz
+@@ -21,7 +21,7 @@
+ 
+ if [ ! -f archives/${BINUTILS_ARCHIVE} ]; then
+     echo "Downloading ${BINUTILS_ARCHIVE} ..."
+-    wget -Parchives ftp://ftp.fu-berlin.de/unix/gnu/binutils/${BINUTILS_ARCHIVE}
++    wget --no-verbose -Parchives ftp://ftp.fu-berlin.de/unix/gnu/binutils/${BINUTILS_ARCHIVE}
+ fi
+ 
+ if [ `md5sum -b archives/${BINUTILS_ARCHIVE} | cut -d* -f1` != ${BINUTILS_MD5} ]; then
+@@ -31,7 +31,7 @@
+ 
+ if [ ! -f archives/${GCC_ARCHIVE} ]; then
+     echo "Downloading ${GCC_ARCHIVE} ..."
+-    wget -Parchives ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-5.2.0/${GCC_ARCHIVE}
++    wget --no-verbose -Parchives ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/${GCC_VERSION}/${GCC_ARCHIVE}
+ fi
+ 
+ if [ `md5sum -b archives/${GCC_ARCHIVE} | cut -d* -f1` != ${GCC_MD5} ]; then
+@@ -41,7 +41,7 @@
+ 
+ if [ ! -f archives/${NEWLIB_ARCHIVE} ]; then
+     echo "Downloading ${NEWLIB_ARCHIVE} ..."
+-    wget -Parchives ftp://sourceware.org/pub/newlib/${NEWLIB_ARCHIVE}
++    wget --no-verbose -Parchives ftp://sourceware.org/pub/newlib/${NEWLIB_ARCHIVE}
+ fi
+ 
+ if [ `md5sum -b archives/${NEWLIB_ARCHIVE} | cut -d* -f1` != ${NEWLIB_MD5} ]; then
+@@ -62,8 +62,8 @@
+ mkdir arm-none-eabi
+ cd arm-none-eabi
+ ../configure --target=arm-none-eabi --prefix=/opt/arm-none-eabi
+-make
+-sudo make install
++make -j $(nproc)
++make install
+ cd ../../
+ 
+ # ------------------------ build gcc ------------------
+@@ -76,7 +76,7 @@
+     rm -rf ${GCC_VERSION} 
+ fi
+ 
+-tar xfj archives/${GCC_ARCHIVE}
++tar xfJ archives/${GCC_ARCHIVE}
+ 
+ if [ -d ${NEWLIB_VERSION} ]; then
+     echo "Cleaning up previous build ..."
+@@ -85,12 +85,12 @@
+ 
+ tar xfz archives/${NEWLIB_ARCHIVE}
+ 
+-
++export CXXFLAGS="-std=c++11"
+ cd ${GCC_VERSION}
+ ln -s ../${NEWLIB_VERSION}/newlib .
+ mkdir arm-none-eabi
+ cd arm-none-eabi
+ ../configure --target=arm-none-eabi --prefix=/opt/arm-none-eabi --enable-languages=c --with-newlib --enable-newlib-io-long-long
+-make
+-sudo make install
++make -j $(nproc)
++make install
+ cd ../../
