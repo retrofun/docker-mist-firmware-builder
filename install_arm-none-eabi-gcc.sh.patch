@@ -1,5 +1,5 @@
---- install_arm-none-eabi-gcc.sh.orig	2023-03-26 23:35:59.638254613 +0200
-+++ install_arm-none-eabi-gcc.sh	2023-03-26 23:36:42.462072231 +0200
+--- install_arm-none-eabi-gcc.sh.orig	2023-08-24 20:45:49.545030390 +0200
++++ install_arm-none-eabi-gcc.sh	2023-08-24 20:46:06.540721065 +0200
 @@ -7,9 +7,9 @@
  BINUTILS_ARCHIVE=${BINUTILS_VERSION}.tar.bz2
  BINUTILS_MD5=ac493a78de4fee895961d025b7905be4
@@ -47,7 +47,7 @@
 -make
 -sudo make install
 +make -j $(nproc)
-+make install
++make install-strip
  cd ../../
  
  # ------------------------ build gcc ------------------
@@ -74,5 +74,5 @@
 -make
 -sudo make install
 +make -j $(nproc)
-+make install
++make install-strip
  cd ../../
