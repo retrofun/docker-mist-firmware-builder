@@ -6,6 +6,7 @@ WORKDIR /tmp
 COPY install_arm-none-eabi-gcc.sh.patch .
 
 RUN apt update && \
+apt -y upgrade && \
 apt -y --no-install-recommends install bzip2 ca-certificates g++ gcc git libgmp-dev libmpc-dev libmpfr-dev make patch wget xz-utils && \
 wget --no-verbose https://github.com/mist-devel/mist-board/raw/master/tools/install_arm-none-eabi-gcc.sh && \
 patch -p0 <install_arm-none-eabi-gcc.sh.patch && \
