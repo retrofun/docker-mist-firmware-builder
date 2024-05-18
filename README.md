@@ -1,6 +1,6 @@
 # Docker mist-firmware-builder
 
-This repository provides a Dockerfile to create a Docker image based on Ubuntu 22.04 for building the [firmware](https://github.com/mist-devel/mist-firmware) for [MiST FPGA](https://github.com/mist-devel/mist-board/wiki).
+This repository provides a Dockerfile to create a Docker image based on Ubuntu 24.04 LTS for building the [firmware](https://github.com/mist-devel/mist-firmware) for [MiST FPGA](https://github.com/mist-devel/mist-board/wiki).
 
 A ready-built public Docker image is available at [ghcr.io/retrofun/mist-firmware-builder](https://ghcr.io/retrofun/mist-firmware-builder).
 
